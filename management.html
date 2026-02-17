@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>flow planner · weekend + themes</title>
+    <title>flow planner · weekend + themes + notes</title>
     <style>
         * {
             margin: 0;
@@ -354,6 +354,63 @@
             gap: 0.5rem;
         }
 
+        /* thoughts / notes section */
+        .thoughts-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 1.8rem 1.5rem;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 25px 45px -12px black;
+            margin-bottom: 2rem;
+        }
+
+        .thoughts-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .thought-card {
+            background: var(--task-name-bg);
+            border-radius: 24px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: inset 0 1px 3px #0e1f26, 0 4px 10px var(--shadow-dark);
+            border: 1px solid var(--border-light);
+            min-width: 220px;
+            max-width: 100%;
+            color: var(--text-primary);
+        }
+
+        .thought-text {
+            font-size: 1rem;
+            word-break: break-word;
+            flex: 1;
+        }
+
+        .delete-thought-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #ffa690;
+            padding: 0 6px;
+            border-radius: 30px;
+            transition: 0.15s;
+            line-height: 1;
+        }
+
+        .delete-thought-btn:hover {
+            color: #ff6f5c;
+            transform: scale(1.15);
+            background: rgba(0,0,0,0.2);
+        }
+
         .save-toast {
             position: fixed;
             bottom: 30px;
@@ -451,6 +508,18 @@
         </table>
     </div>
 
+    <!-- THOUGHTS & NOTES SECTION (new) -->
+    <div class="section-heading"><span>💭 Thoughts & Notes</span></div>
+    <div class="task-creator">
+        <input type="text" id="thought-input" placeholder="write a quote, thought, or note ..." autocomplete="off">
+        <button id="add-thought-btn">➕ Add thought</button>
+    </div>
+    <div class="thoughts-container">
+        <div id="thoughts-list" class="thoughts-grid">
+            <!-- thoughts will be injected here -->
+        </div>
+    </div>
+
     <!-- auto-save toast (shared) -->
     <div id="save-toast" class="save-toast">✨ auto-saved</div>
 </div>
@@ -482,6 +551,12 @@
         const sunInput = document.getElementById('sunday-task');
         const addSunBtn = document.getElementById('add-sunday-task');
         const sunCompletionCells = Array.from({length:31}, (_,i) => document.getElementById(`sun-completion-${i+1}`));
+
+        // ---------- THOUGHTS data ----------
+        let thoughts = [];
+        const thoughtsList = document.getElementById('thoughts-list');
+        const thoughtInput = document.getElementById('thought-input');
+        const addThoughtBtn = document.getElementById('add-thought-btn');
 
         // ---------- theme elements ----------
         const themeBtns = document.querySelectorAll('.theme-btn');
@@ -604,7 +679,7 @@
             chart.update();
         }
 
-        // ----- SATURDAY functions -----
+        // ----- SATURDAY functions (unchanged) -----
         function saveSaturdayTasks() {
             localStorage.setItem('saturday_tasks', JSON.stringify(saturdayTasks));
             showAutoSave();
@@ -690,7 +765,7 @@
             if (satCompletionCells[day-1]) satCompletionCells[day-1].textContent = percent === 0 ? '' : percent + '%';
         }
 
-        // ----- SUNDAY functions (mirror saturday) -----
+        // ----- SUNDAY functions (unchanged) -----
         function saveSundayTasks() {
             localStorage.setItem('sunday_tasks', JSON.stringify(sundayTasks));
             showAutoSave();
@@ -776,14 +851,58 @@
             if (sunCompletionCells[day-1]) sunCompletionCells[day-1].textContent = percent === 0 ? '' : percent + '%';
         }
 
-        function escapeHTML(str) {
-            return String(str).replace(/[&<>"]/g, function(m) {
-                if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; if (m === '"') return '&quot;';
-                return m;
+        // ----- THOUGHTS functions (new) -----
+        function saveThoughts() {
+            localStorage.setItem('planner_thoughts', JSON.stringify(thoughts));
+            showAutoSave();
+        }
+
+        function loadThoughts() {
+            const stored = localStorage.getItem('planner_thoughts');
+            if (stored) { try { thoughts = JSON.parse(stored); } catch (e) { thoughts = []; } }
+            else thoughts = [];
+        }
+
+        function renderThoughts() {
+            thoughtsList.innerHTML = '';
+            if (thoughts.length === 0) {
+                thoughtsList.innerHTML = `<div class="empty-message" style="width:100%;">✨ add a thought, quote, or note ✨</div>`;
+            } else {
+                thoughts.forEach(thought => addThoughtCard(thought));
+            }
+        }
+
+        function addThoughtCard(thought) {
+            const { id, text } = thought;
+            const card = document.createElement('div');
+            card.className = 'thought-card';
+            card.dataset.thoughtId = id;
+            card.innerHTML = `
+                <span class="thought-text">${escapeHTML(text)}</span>
+                <button class="delete-thought-btn" data-thought-id="${id}" title="delete note">🗑️</button>
+            `;
+            thoughtsList.appendChild(card);
+
+            const deleteBtn = card.querySelector('.delete-thought-btn');
+            deleteBtn.addEventListener('click', function() {
+                const tid = Number(this.dataset.thoughtId);
+                thoughts = thoughts.filter(t => t.id !== tid);
+                renderThoughts();
+                saveThoughts();
             });
         }
 
-        // ----- chart init (unchanged, but uses current theme) -----
+        function addNewThought() {
+            const text = thoughtInput.value.trim();
+            if (!text) { alert('enter a thought'); return; }
+            const newId = thoughts.length ? Math.max(...thoughts.map(t => t.id)) + 1 : 1;
+            thoughts.push({ id: newId, text });
+            renderThoughts();
+            thoughtInput.value = '';
+            saveThoughts();
+        }
+
+        // ----- chart init (unchanged) -----
         function initChart() {
             const ctx = document.getElementById('completionChart').getContext('2d');
             const style = getComputedStyle(body);
@@ -897,14 +1016,28 @@
         });
         sunInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addSunBtn.click(); });
 
+        // ----- thoughts events -----
+        addThoughtBtn.addEventListener('click', addNewThought);
+        thoughtInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addNewThought(); });
+
+        // ----- helper escapeHTML -----
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>"]/g, function(m) {
+                if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; if (m === '"') return '&quot;';
+                return m;
+            });
+        }
+
         // ----- load all & render -----
         loadMainTasks();
         loadSaturdayTasks();
         loadSundayTasks();
+        loadThoughts();
         initChart();
         renderMainTasks();
         renderSaturdayTasks();
         renderSundayTasks();
+        renderThoughts();
         updateChartTheme(); // ensure chart matches theme after render
     })();
 </script>
