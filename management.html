@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>flow planner · themes</title>
+    <title>flow planner · weekend + themes</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
             font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* ========== CSS variables (default = dark theme) ========== */
+        /* ========== CSS variables (default dark, light) ========== */
         body {
             --bg-gradient-start: #1e2b30;
             --bg-gradient-end: #1f2f36;
@@ -68,64 +68,6 @@
             --chart-grid: #8ba3b3;
             --chart-label: #2c4b5c;
             --chart-legend: #2c4b5c;
-        }
-
-        /* neutral mode (calm grey) */
-        body.theme-neutral {
-            --bg-gradient-start: #3a4045;
-            --bg-gradient-end: #2c3136;
-            --card-bg: rgba(45, 50, 55, 0.85);
-            --card-border: rgba(180, 180, 180, 0.15);
-            --text-primary: #ececec;
-            --text-secondary: #c0c8d0;
-            --stat-bg: #4f5a64;
-            --input-bg: #4a535c;
-            --input-placeholder: #aab7c2;
-            --button-bg: #6a7a88;
-            --button-hover: #7e8f9e;
-            --reset-bg: #b5684c;
-            --reset-hover: #9e533a;
-            --table-header-bg: #3a4753;
-            --table-cell-even: rgba(90, 100, 110, 0.3);
-            --table-cell-odd: rgba(70, 80, 90, 0.2);
-            --task-name-bg: #434f5a;
-            --completion-row-bg: #3d4d59;
-            --completion-text: #cfdee9;
-            --toast-bg: #4e6d5e;
-            --shadow-dark: rgba(0, 0, 0, 0.5);
-            --border-light: rgba(255,255,255,0.08);
-            --chart-grid: #5b6d7a;
-            --chart-label: #cbd5e0;
-            --chart-legend: #cbd5e0;
-        }
-
-        /* aurora mode (purple/teal) */
-        body.theme-aurora {
-            --bg-gradient-start: #282c4a;
-            --bg-gradient-end: #1e3a4a;
-            --card-bg: rgba(35, 45, 65, 0.8);
-            --card-border: rgba(200, 180, 255, 0.2);
-            --text-primary: #f0eaff;
-            --text-secondary: #cbbff0;
-            --stat-bg: #4d4c7a;
-            --input-bg: #363b60;
-            --input-placeholder: #b1a9e0;
-            --button-bg: #6d5c9e;
-            --button-hover: #8370b5;
-            --reset-bg: #c96f85;
-            --reset-hover: #b2586e;
-            --table-header-bg: #3f3d6b;
-            --table-cell-even: rgba(110, 95, 155, 0.3);
-            --table-cell-odd: rgba(80, 70, 130, 0.2);
-            --task-name-bg: #48447a;
-            --completion-row-bg: #464373;
-            --completion-text: #d9c9ff;
-            --toast-bg: #607d8b;
-            --shadow-dark: rgba(0, 0, 0, 0.6);
-            --border-light: rgba(220, 200, 255, 0.15);
-            --chart-grid: #7970b5;
-            --chart-label: #dfd0ff;
-            --chart-legend: #dfd0ff;
         }
 
         body {
@@ -193,7 +135,7 @@
             color: white;
         }
 
-        /* theme switcher */
+        /* theme switcher (only dark/light) */
         .theme-switcher {
             display: flex;
             gap: 0.4rem;
@@ -296,7 +238,7 @@
             background: var(--reset-hover) !important;
         }
 
-        /* table card */
+        /* table card (reused for weekend sections) */
         .table-container {
             background: var(--card-bg);
             backdrop-filter: blur(4px);
@@ -398,6 +340,18 @@
             padding: 1.5rem 1.2rem;
             border: 1px solid var(--card-border);
             box-shadow: 0 20px 35px -10px black;
+            margin-bottom: 2.5rem;
+        }
+
+        /* weekend section headings */
+        .section-heading {
+            font-size: 2rem;
+            font-weight: 500;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .save-toast {
@@ -441,16 +395,14 @@
             <div class="stat-item"><span>📌 tasks</span><span class="stat-value" id="total-tasks-count">0</span></div>
             <div class="stat-item"><span>⚡ avg</span><span class="stat-value" id="avg-completion">0%</span></div>
         </div>
-        <!-- theme switcher -->
+        <!-- theme switcher (only dark/light) -->
         <div class="theme-switcher">
             <button class="theme-btn" data-theme="theme-dark" title="dark">🌙</button>
             <button class="theme-btn" data-theme="theme-light" title="light">☀️</button>
-            <button class="theme-btn" data-theme="theme-neutral" title="neutral">💨</button>
-            <button class="theme-btn" data-theme="theme-aurora" title="aurora">✨</button>
         </div>
     </div>
 
-    <!-- input row -->
+    <!-- main (weekday) input row -->
     <div class="task-creator">
         <input type="text" id="new-task" placeholder="e.g., morning pages, study session ..." autocomplete="off">
         <button id="add-task">➕ Add task</button>
@@ -471,13 +423,41 @@
         <canvas id="completionChart" width="400" height="150"></canvas>
     </div>
 
-    <!-- auto-save toast -->
+    <!-- SATURDAY SECTION (identical structure) -->
+    <div class="section-heading"><span>🗓️ Saturday</span></div>
+    <div class="task-creator">
+        <input type="text" id="saturday-task" placeholder="saturday tasks ..." autocomplete="off">
+        <button id="add-saturday-task">➕ Add task</button>
+    </div>
+    <div class="table-container">
+        <table class="schedule-table" id="saturday-table">
+            <thead><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th></tr></thead>
+            <tbody id="saturday-task-rows"></tbody>
+            <tfoot><tr class="completion-row"><td><strong>📊 %</strong></td><td id="sat-completion-1"></td><td id="sat-completion-2"></td><td id="sat-completion-3"></td><td id="sat-completion-4"></td><td id="sat-completion-5"></td><td id="sat-completion-6"></td><td id="sat-completion-7"></td><td id="sat-completion-8"></td><td id="sat-completion-9"></td><td id="sat-completion-10"></td><td id="sat-completion-11"></td><td id="sat-completion-12"></td><td id="sat-completion-13"></td><td id="sat-completion-14"></td><td id="sat-completion-15"></td><td id="sat-completion-16"></td><td id="sat-completion-17"></td><td id="sat-completion-18"></td><td id="sat-completion-19"></td><td id="sat-completion-20"></td><td id="sat-completion-21"></td><td id="sat-completion-22"></td><td id="sat-completion-23"></td><td id="sat-completion-24"></td><td id="sat-completion-25"></td><td id="sat-completion-26"></td><td id="sat-completion-27"></td><td id="sat-completion-28"></td><td id="sat-completion-29"></td><td id="sat-completion-30"></td><td id="sat-completion-31"></td></tr></tfoot>
+        </table>
+    </div>
+
+    <!-- SUNDAY SECTION -->
+    <div class="section-heading"><span>☀️ Sunday</span></div>
+    <div class="task-creator">
+        <input type="text" id="sunday-task" placeholder="sunday tasks ..." autocomplete="off">
+        <button id="add-sunday-task">➕ Add task</button>
+    </div>
+    <div class="table-container">
+        <table class="schedule-table" id="sunday-table">
+            <thead><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th></tr></thead>
+            <tbody id="sunday-task-rows"></tbody>
+            <tfoot><tr class="completion-row"><td><strong>📊 %</strong></td><td id="sun-completion-1"></td><td id="sun-completion-2"></td><td id="sun-completion-3"></td><td id="sun-completion-4"></td><td id="sun-completion-5"></td><td id="sun-completion-6"></td><td id="sun-completion-7"></td><td id="sun-completion-8"></td><td id="sun-completion-9"></td><td id="sun-completion-10"></td><td id="sun-completion-11"></td><td id="sun-completion-12"></td><td id="sun-completion-13"></td><td id="sun-completion-14"></td><td id="sun-completion-15"></td><td id="sun-completion-16"></td><td id="sun-completion-17"></td><td id="sun-completion-18"></td><td id="sun-completion-19"></td><td id="sun-completion-20"></td><td id="sun-completion-21"></td><td id="sun-completion-22"></td><td id="sun-completion-23"></td><td id="sun-completion-24"></td><td id="sun-completion-25"></td><td id="sun-completion-26"></td><td id="sun-completion-27"></td><td id="sun-completion-28"></td><td id="sun-completion-29"></td><td id="sun-completion-30"></td><td id="sun-completion-31"></td></tr></tfoot>
+        </table>
+    </div>
+
+    <!-- auto-save toast (shared) -->
     <div id="save-toast" class="save-toast">✨ auto-saved</div>
 </div>
 
 <script>
     (function() {
-        // ---------- core data ----------
+        // ---------- MAIN (weekday) data ----------
         let tasks = [];
         const taskRows = document.getElementById('task-rows');
         const newTaskInput = document.getElementById('new-task');
@@ -488,45 +468,58 @@
         const totalTasksSpan = document.getElementById('total-tasks-count');
         const avgCompletionSpan = document.getElementById('avg-completion');
         const toast = document.getElementById('save-toast');
+
+        // ---------- SATURDAY data ----------
+        let saturdayTasks = [];
+        const saturdayRows = document.getElementById('saturday-task-rows');
+        const satInput = document.getElementById('saturday-task');
+        const addSatBtn = document.getElementById('add-saturday-task');
+        const satCompletionCells = Array.from({length:31}, (_,i) => document.getElementById(`sat-completion-${i+1}`));
+
+        // ---------- SUNDAY data ----------
+        let sundayTasks = [];
+        const sundayRows = document.getElementById('sunday-task-rows');
+        const sunInput = document.getElementById('sunday-task');
+        const addSunBtn = document.getElementById('add-sunday-task');
+        const sunCompletionCells = Array.from({length:31}, (_,i) => document.getElementById(`sun-completion-${i+1}`));
+
+        // ---------- theme elements ----------
         const themeBtns = document.querySelectorAll('.theme-btn');
         const body = document.body;
 
-        // show auto-save toast
+        // shared auto-save toast
         function showAutoSave() {
             toast.classList.add('show');
             clearTimeout(window.toastTimer);
             window.toastTimer = setTimeout(() => toast.classList.remove('show'), 1000);
         }
 
-        // ---------- localStorage ----------
-        function saveEverything() {
+        // ----- MAIN functions (existing) -----
+        function saveMainTasks() {
             localStorage.setItem('planner_tasks', JSON.stringify(tasks));
             showAutoSave();
         }
 
-        function loadTasks() {
+        function loadMainTasks() {
             const stored = localStorage.getItem('planner_tasks');
             if (stored) { try { tasks = JSON.parse(stored); } catch (e) { tasks = []; } }
             else tasks = [];
             tasks = tasks.map(t => ({ ...t, completedDays: Array.isArray(t.completedDays) ? t.completedDays : [] }));
         }
 
-        // ---------- render all tasks ----------
-        function renderAllTasks() {
+        function renderMainTasks() {
             taskRows.innerHTML = '';
             if (tasks.length === 0) {
-                const emptyRow = document.createElement('tr');
-                emptyRow.innerHTML = `<td colspan="32" class="empty-message">✨ add a task — your monthly tracker awaits ✨</td>`;
-                taskRows.appendChild(emptyRow);
+                taskRows.innerHTML = `<tr><td colspan="32" class="empty-message">✨ add a task — your monthly tracker awaits ✨</td></tr>`;
             } else {
-                tasks.forEach(task => addTaskRowToDOM(task));
+                tasks.forEach(task => addMainTaskRow(task));
             }
-            for (let d = 1; d <= 31; d++) updateCompletionPercentage(d);
-            updateStats();
+            for (let d = 1; d <= 31; d++) updateMainCompletion(d);
+            updateMainStats();
             updateChartFromDays();
         }
 
-        function addTaskRowToDOM(task) {
+        function addMainTaskRow(task) {
             const { id, name, completedDays } = task;
             const tr = document.createElement('tr');
             tr.dataset.taskId = id;
@@ -548,7 +541,7 @@
                 chk.dataset.taskId = id;
                 if (completedDays.includes(day)) chk.checked = true;
                 td.appendChild(chk);
-                tr.appendChild(chk.parentNode);
+                tr.appendChild(td);
 
                 chk.addEventListener('change', function(e) {
                     const taskId = Number(this.dataset.taskId);
@@ -561,10 +554,10 @@
                         const idx = task.completedDays.indexOf(dayNum);
                         if (idx !== -1) task.completedDays.splice(idx, 1);
                     }
-                    updateCompletionPercentage(dayNum);
-                    updateStats();
+                    updateMainCompletion(dayNum);
+                    updateMainStats();
                     updateChartFromDays();
-                    saveEverything();
+                    saveMainTasks();
                 });
             }
 
@@ -574,20 +567,13 @@
             deleteBtn.addEventListener('click', function() {
                 const taskId = Number(this.dataset.taskId);
                 tasks = tasks.filter(t => t.id !== taskId);
-                renderAllTasks();
-                saveEverything();
+                renderMainTasks();
+                saveMainTasks();
             });
         }
 
-        function escapeHTML(str) {
-            return String(str).replace(/[&<>"]/g, function(m) {
-                if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; if (m === '"') return '&quot;';
-                return m;
-            });
-        }
-
-        function updateCompletionPercentage(day) {
-            const checkboxes = document.querySelectorAll(`input[data-day="${day}"]`);
+        function updateMainCompletion(day) {
+            const checkboxes = document.querySelectorAll(`#task-rows input[data-day="${day}"]`);
             const total = checkboxes.length;
             if (total === 0) {
                 document.getElementById(`completion-${day}`).textContent = '';
@@ -601,7 +587,7 @@
             if (cell) cell.textContent = percent === 0 ? '' : percent + '%';
         }
 
-        function updateStats() {
+        function updateMainStats() {
             totalTasksSpan.textContent = tasks.length;
             let sum = 0, count = 0;
             for (let d = 1; d <= 31; d++) {
@@ -618,7 +604,186 @@
             chart.update();
         }
 
-        // ---------- chart init with theme-aware colors ----------
+        // ----- SATURDAY functions -----
+        function saveSaturdayTasks() {
+            localStorage.setItem('saturday_tasks', JSON.stringify(saturdayTasks));
+            showAutoSave();
+        }
+
+        function loadSaturdayTasks() {
+            const stored = localStorage.getItem('saturday_tasks');
+            if (stored) { try { saturdayTasks = JSON.parse(stored); } catch (e) { saturdayTasks = []; } }
+            else saturdayTasks = [];
+            saturdayTasks = saturdayTasks.map(t => ({ ...t, completedDays: Array.isArray(t.completedDays) ? t.completedDays : [] }));
+        }
+
+        function renderSaturdayTasks() {
+            saturdayRows.innerHTML = '';
+            if (saturdayTasks.length === 0) {
+                saturdayRows.innerHTML = `<tr><td colspan="32" class="empty-message">✨ add saturday tasks ✨</td></tr>`;
+            } else {
+                saturdayTasks.forEach(task => addSaturdayTaskRow(task));
+            }
+            for (let d = 1; d <= 31; d++) updateSaturdayCompletion(d);
+        }
+
+        function addSaturdayTaskRow(task) {
+            const { id, name, completedDays } = task;
+            const tr = document.createElement('tr');
+            tr.dataset.taskId = id;
+
+            const tdName = document.createElement('td');
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'task-name-cell';
+            nameDiv.innerHTML = `<span style="flex:1;">${escapeHTML(name)}</span>
+                                <button class="delete-task-btn" data-task-id="${id}" title="delete">🗑️</button>`;
+            tdName.appendChild(nameDiv);
+            tr.appendChild(tdName);
+
+            for (let day = 1; day <= 31; day++) {
+                const td = document.createElement('td');
+                const chk = document.createElement('input');
+                chk.type = 'checkbox';
+                chk.className = 'checkbox';
+                chk.dataset.day = day;
+                chk.dataset.taskId = id;
+                if (completedDays.includes(day)) chk.checked = true;
+                td.appendChild(chk);
+                tr.appendChild(td);
+
+                chk.addEventListener('change', function(e) {
+                    const taskId = Number(this.dataset.taskId);
+                    const dayNum = Number(this.dataset.day);
+                    const task = saturdayTasks.find(t => t.id === taskId);
+                    if (!task) return;
+                    if (this.checked) {
+                        if (!task.completedDays.includes(dayNum)) task.completedDays.push(dayNum);
+                    } else {
+                        const idx = task.completedDays.indexOf(dayNum);
+                        if (idx !== -1) task.completedDays.splice(idx, 1);
+                    }
+                    updateSaturdayCompletion(dayNum);
+                    saveSaturdayTasks();
+                });
+            }
+
+            saturdayRows.appendChild(tr);
+
+            const deleteBtn = nameDiv.querySelector('.delete-task-btn');
+            deleteBtn.addEventListener('click', function() {
+                const taskId = Number(this.dataset.taskId);
+                saturdayTasks = saturdayTasks.filter(t => t.id !== taskId);
+                renderSaturdayTasks();
+                saveSaturdayTasks();
+            });
+        }
+
+        function updateSaturdayCompletion(day) {
+            const checkboxes = document.querySelectorAll(`#saturday-task-rows input[data-day="${day}"]`);
+            const total = checkboxes.length;
+            if (total === 0) {
+                if (satCompletionCells[day-1]) satCompletionCells[day-1].textContent = '';
+                return;
+            }
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const percent = Math.round((checked / total) * 100);
+            if (satCompletionCells[day-1]) satCompletionCells[day-1].textContent = percent === 0 ? '' : percent + '%';
+        }
+
+        // ----- SUNDAY functions (mirror saturday) -----
+        function saveSundayTasks() {
+            localStorage.setItem('sunday_tasks', JSON.stringify(sundayTasks));
+            showAutoSave();
+        }
+
+        function loadSundayTasks() {
+            const stored = localStorage.getItem('sunday_tasks');
+            if (stored) { try { sundayTasks = JSON.parse(stored); } catch (e) { sundayTasks = []; } }
+            else sundayTasks = [];
+            sundayTasks = sundayTasks.map(t => ({ ...t, completedDays: Array.isArray(t.completedDays) ? t.completedDays : [] }));
+        }
+
+        function renderSundayTasks() {
+            sundayRows.innerHTML = '';
+            if (sundayTasks.length === 0) {
+                sundayRows.innerHTML = `<tr><td colspan="32" class="empty-message">✨ add sunday tasks ✨</td></tr>`;
+            } else {
+                sundayTasks.forEach(task => addSundayTaskRow(task));
+            }
+            for (let d = 1; d <= 31; d++) updateSundayCompletion(d);
+        }
+
+        function addSundayTaskRow(task) {
+            const { id, name, completedDays } = task;
+            const tr = document.createElement('tr');
+            tr.dataset.taskId = id;
+
+            const tdName = document.createElement('td');
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'task-name-cell';
+            nameDiv.innerHTML = `<span style="flex:1;">${escapeHTML(name)}</span>
+                                <button class="delete-task-btn" data-task-id="${id}" title="delete">🗑️</button>`;
+            tdName.appendChild(nameDiv);
+            tr.appendChild(tdName);
+
+            for (let day = 1; day <= 31; day++) {
+                const td = document.createElement('td');
+                const chk = document.createElement('input');
+                chk.type = 'checkbox';
+                chk.className = 'checkbox';
+                chk.dataset.day = day;
+                chk.dataset.taskId = id;
+                if (completedDays.includes(day)) chk.checked = true;
+                td.appendChild(chk);
+                tr.appendChild(td);
+
+                chk.addEventListener('change', function(e) {
+                    const taskId = Number(this.dataset.taskId);
+                    const dayNum = Number(this.dataset.day);
+                    const task = sundayTasks.find(t => t.id === taskId);
+                    if (!task) return;
+                    if (this.checked) {
+                        if (!task.completedDays.includes(dayNum)) task.completedDays.push(dayNum);
+                    } else {
+                        const idx = task.completedDays.indexOf(dayNum);
+                        if (idx !== -1) task.completedDays.splice(idx, 1);
+                    }
+                    updateSundayCompletion(dayNum);
+                    saveSundayTasks();
+                });
+            }
+
+            sundayRows.appendChild(tr);
+
+            const deleteBtn = nameDiv.querySelector('.delete-task-btn');
+            deleteBtn.addEventListener('click', function() {
+                const taskId = Number(this.dataset.taskId);
+                sundayTasks = sundayTasks.filter(t => t.id !== taskId);
+                renderSundayTasks();
+                saveSundayTasks();
+            });
+        }
+
+        function updateSundayCompletion(day) {
+            const checkboxes = document.querySelectorAll(`#sunday-task-rows input[data-day="${day}"]`);
+            const total = checkboxes.length;
+            if (total === 0) {
+                if (sunCompletionCells[day-1]) sunCompletionCells[day-1].textContent = '';
+                return;
+            }
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const percent = Math.round((checked / total) * 100);
+            if (sunCompletionCells[day-1]) sunCompletionCells[day-1].textContent = percent === 0 ? '' : percent + '%';
+        }
+
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>"]/g, function(m) {
+                if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; if (m === '"') return '&quot;';
+                return m;
+            });
+        }
+
+        // ----- chart init (unchanged, but uses current theme) -----
         function initChart() {
             const ctx = document.getElementById('completionChart').getContext('2d');
             const style = getComputedStyle(body);
@@ -653,7 +818,6 @@
             });
         }
 
-        // update chart colors when theme changes
         function updateChartTheme() {
             if (!chart) return;
             const style = getComputedStyle(body);
@@ -665,11 +829,10 @@
             chart.update();
         }
 
-        // ---------- theme switcher ----------
+        // ----- theme switcher (only dark/light) -----
         function setTheme(themeClass) {
-            body.className = themeClass;  // remove others, set new
+            body.className = themeClass;
             localStorage.setItem('planner_theme', themeClass);
-            // update active button
             themeBtns.forEach(btn => {
                 if (btn.dataset.theme === themeClass) btn.classList.add('active');
                 else btn.classList.remove('active');
@@ -677,48 +840,72 @@
             updateChartTheme();
         }
 
-        // load saved theme
         const savedTheme = localStorage.getItem('planner_theme');
-        if (savedTheme && savedTheme.match(/^theme-(dark|light|neutral|aurora)$/)) {
+        if (savedTheme && (savedTheme === 'theme-dark' || savedTheme === 'theme-light')) {
             setTheme(savedTheme);
         } else {
-            setTheme('theme-dark'); // default
+            setTheme('theme-dark');
         }
 
         themeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                setTheme(btn.dataset.theme);
-            });
+            btn.addEventListener('click', () => setTheme(btn.dataset.theme));
         });
 
-        // ---------- task actions ----------
+        // ----- event listeners for main -----
         function addNewTask() {
             const taskName = newTaskInput.value.trim();
             if (!taskName) { alert('enter a task'); return; }
             const newId = tasks.length ? Math.max(...tasks.map(t => t.id)) + 1 : 1;
             tasks.push({ id: newId, name: taskName, completedDays: [] });
-            renderAllTasks();
+            renderMainTasks();
             newTaskInput.value = '';
-            saveEverything();
+            saveMainTasks();
         }
 
         function resetAll() {
-            if (!confirm('Delete all tasks?')) return;
+            if (!confirm('Delete all main tasks?')) return;
             tasks = [];
-            renderAllTasks();
-            saveEverything();
+            renderMainTasks();
+            saveMainTasks();
         }
 
         addBtn.addEventListener('click', addNewTask);
         newTaskInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addNewTask(); });
         resetBtn.addEventListener('click', resetAll);
 
-        // ---------- bootstrap ----------
-        loadTasks();
+        // ----- saturday events -----
+        addSatBtn.addEventListener('click', function() {
+            const name = satInput.value.trim();
+            if (!name) return;
+            const newId = saturdayTasks.length ? Math.max(...saturdayTasks.map(t => t.id)) + 1 : 1;
+            saturdayTasks.push({ id: newId, name, completedDays: [] });
+            renderSaturdayTasks();
+            satInput.value = '';
+            saveSaturdayTasks();
+        });
+        satInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addSatBtn.click(); });
+
+        // ----- sunday events -----
+        addSunBtn.addEventListener('click', function() {
+            const name = sunInput.value.trim();
+            if (!name) return;
+            const newId = sundayTasks.length ? Math.max(...sundayTasks.map(t => t.id)) + 1 : 1;
+            sundayTasks.push({ id: newId, name, completedDays: [] });
+            renderSundayTasks();
+            sunInput.value = '';
+            saveSundayTasks();
+        });
+        sunInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addSunBtn.click(); });
+
+        // ----- load all & render -----
+        loadMainTasks();
+        loadSaturdayTasks();
+        loadSundayTasks();
         initChart();
-        renderAllTasks();
-        // after render ensure chart theme matches current (already set by setTheme earlier)
-        updateChartTheme();
+        renderMainTasks();
+        renderSaturdayTasks();
+        renderSundayTasks();
+        updateChartTheme(); // ensure chart matches theme after render
     })();
 </script>
 </body>
