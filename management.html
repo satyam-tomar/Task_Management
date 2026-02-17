@@ -297,6 +297,13 @@
             color: var(--text-primary);
         }
 
+        /* CHANGED: preserve whitespace/formatting in task name spans */
+        .task-name-cell span {
+            white-space: pre-wrap;
+            word-break: break-word;
+            text-align: left;
+        }
+
         .delete-task-btn {
             background: none;
             border: none;
@@ -387,10 +394,13 @@
             color: var(--text-primary);
         }
 
+        /* CHANGED: preserve whitespace/newlines/indentation exactly as typed */
         .thought-text {
             font-size: 1rem;
             word-break: break-word;
             flex: 1;
+            white-space: pre-wrap;
+            font-family: inherit;
         }
 
         .delete-thought-btn {
@@ -409,6 +419,32 @@
             color: #ff6f5c;
             transform: scale(1.15);
             background: rgba(0,0,0,0.2);
+        }
+
+        /* CHANGED: thought input now a textarea to allow multi-line entry */
+        .task-creator textarea {
+            flex: 1 1 260px;
+            background: var(--input-bg);
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 24px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            outline: 2px solid transparent;
+            transition: all 0.2s;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+            font-family: inherit;
+            resize: vertical;
+            min-height: 52px;
+        }
+
+        .task-creator textarea::placeholder {
+            color: var(--input-placeholder);
+            font-weight: 300;
+        }
+
+        .task-creator textarea:focus {
+            outline: 2px solid var(--button-bg);
         }
 
         .save-toast {
@@ -508,10 +544,11 @@
         </table>
     </div>
 
-    <!-- THOUGHTS & NOTES SECTION (new) -->
+    <!-- THOUGHTS & NOTES SECTION -->
+    <!-- CHANGED: input replaced with textarea so multi-line typing is possible -->
     <div class="section-heading"><span>💭 Thoughts & Notes</span></div>
     <div class="task-creator">
-        <input type="text" id="thought-input" placeholder="write a quote, thought, or note ..." autocomplete="off">
+        <textarea id="thought-input" placeholder="write a quote, thought, or note ... (Shift+Enter for new line, Enter to save)" rows="2"></textarea>
         <button id="add-thought-btn">➕ Add thought</button>
     </div>
     <div class="thoughts-container">
@@ -521,7 +558,7 @@
     </div>
 
     <!-- auto-save toast (shared) -->
-    <div id="save-toast" class="save-toast">✨ auto-saved</div>
+    <div id="save-toast" class="save-toast">✨ saved</div>
 </div>
 
 <script>
@@ -851,7 +888,7 @@
             if (sunCompletionCells[day-1]) sunCompletionCells[day-1].textContent = percent === 0 ? '' : percent + '%';
         }
 
-        // ----- THOUGHTS functions (new) -----
+        // ----- THOUGHTS functions -----
         function saveThoughts() {
             localStorage.setItem('planner_thoughts', JSON.stringify(thoughts));
             showAutoSave();
@@ -877,13 +914,22 @@
             const card = document.createElement('div');
             card.className = 'thought-card';
             card.dataset.thoughtId = id;
-            card.innerHTML = `
-                <span class="thought-text">${escapeHTML(text)}</span>
-                <button class="delete-thought-btn" data-thought-id="${id}" title="delete note">🗑️</button>
-            `;
+
+            // CHANGED: use textContent instead of innerHTML so whitespace/newlines are preserved exactly
+            const textSpan = document.createElement('span');
+            textSpan.className = 'thought-text';
+            textSpan.textContent = text;  // textContent respects \n with pre-wrap CSS
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-thought-btn';
+            deleteBtn.dataset.thoughtId = id;
+            deleteBtn.title = 'delete note';
+            deleteBtn.textContent = '🗑️';
+
+            card.appendChild(textSpan);
+            card.appendChild(deleteBtn);
             thoughtsList.appendChild(card);
 
-            const deleteBtn = card.querySelector('.delete-thought-btn');
             deleteBtn.addEventListener('click', function() {
                 const tid = Number(this.dataset.thoughtId);
                 thoughts = thoughts.filter(t => t.id !== tid);
@@ -1018,7 +1064,13 @@
 
         // ----- thoughts events -----
         addThoughtBtn.addEventListener('click', addNewThought);
-        thoughtInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addNewThought(); });
+        // CHANGED: Enter alone saves; Shift+Enter adds a new line (natural multi-line behavior)
+        thoughtInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                addNewThought();
+            }
+        });
 
         // ----- helper escapeHTML -----
         function escapeHTML(str) {
