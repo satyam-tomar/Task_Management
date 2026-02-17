@@ -1,892 +1,725 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Planner</title>
-    <link rel="icon" type="image/webp" href="title_logo.webp">
-
+    <title>flow planner · themes</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2A363B;
-            /* background: linear-gradient(to right, #0f2027, #203a43, #2c5364); */
+        * {
             margin: 0;
-            height:2000px;
-            padding: 20px;
-            /* border: 7px solid #000; */
-        }
-
-        .container {
-            width: 80%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        /* Task List */
-        .task-list {
-            margin-bottom: 20px;
-            margin-left: -150px;
-            display: flex;
-            gap: 10px;
-            border:none;
-        }
-
-        .task-list input[type="text"] {
-            width: 15%;
-            padding: 5px;
-            border: none;
-            font-size: 14px;
-            border-radius: 8px;
-            border-width: 2px;
-        }
-
-        /* Delete button style */
-        #delete-task-btn {
-            background-color: rgb(227, 22, 22);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            top: 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            display: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-            /* Initially hidden */
-        }
-
-        #delete-task-btn:hover {
-            background-color: rgb(103, 0, 0);
-            border: none;
-        }
-
-        #save-btn {
-            width: 40%;
-            padding: 10px 20px;
-            border:none;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-            margin-left: 170px;
-            cursor: pointer;
-        }
-
-        #save-btn:hover {
-            background-color: rgb(112, 112, 112);
-            color: white;
-            border: none;
-            font-weight: bold;
-        }
-
-        /* Notification styling */
-        .notification {
-            display: none;
-            position: fixed;
-            top: 20px;
-            left: 75%;
-            transform: translateX(-50%);
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-
-        #add-task {
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-            border:none;
-            cursor: pointer;
-        }
-
-        #add-task:hover {
-            background-color: #45a049;
-            color: white;
-            border:none;
-        }
-
-        #refresh-btn {
-            position: fixed;
-            bottom: 10px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #ff5722;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: none;
-            /* Initially hide the button */
-            z-index: 9999;
-            /* Ensure it's on top of everything else */
-        }
-
-
-        /* CSS to make sure all boxes are on the right side and stacked vertically */
-        .priority-container {
-            position: absolute;
-            top: 25px;
-            right: 20px;
-            width: 300px;
-            /* Adjust width of the container for the boxes */
-            display: flex;
-            flex-direction: column;
-            /* Stack the boxes vertically */
-            gap: 15px;
-            /* Space between each box */
-            max-height: 2000px;
-            /* Ensure they don't overflow */
-            overflow-y: auto;
-            /* Allow scrolling if content overflows */
-        }
-
-        .todo-container,
-        .priority-box {
-            background-color: #596b75;
-            border-radius: 8px;
-            padding: 15px;
-            border:none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .todo-container h2,
-        .priority-box h2 {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bolder;
-            margin-bottom: 10px;
-        }
-
-        /* Style for input and button in each box */
-        .todo-container input[type="text"],
-        .priority-box input[type="text"] {
-            width: 50%;
-            padding: 8px;
-            font-size: 14px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-        }
-
-        .todo-container button,
-        .priority-box button {
-            width: 35%;
-            padding: 8px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .todo-container button:hover,
-        .priority-box button:hover {
-            background-color: #45a049;
-        }
-
-        .todo-container ul,
-        .priority-box ul {
-            list-style-type: none;
             padding: 0;
-            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        .todo-container ul li,
-        .priority-box ul li {
-            padding: 6px;
-            background-color: #353E43;
-            border-radius: 4px;
-            color: white;
-            margin-bottom: 5px;
+        /* ========== CSS variables (default = dark theme) ========== */
+        body {
+            --bg-gradient-start: #1e2b30;
+            --bg-gradient-end: #1f2f36;
+            --card-bg: rgba(25, 38, 45, 0.7);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --text-primary: #eef3f5;
+            --text-secondary: #cbd5e0;
+            --stat-bg: #3a4e58;
+            --input-bg: #2c3f48;
+            --input-placeholder: #99b2bf;
+            --button-bg: #4f7b8c;
+            --button-hover: #5f8fa2;
+            --reset-bg: rgba(230, 120, 80, 0.9);
+            --reset-hover: #e06e4f;
+            --table-header-bg: #1f3a45;
+            --table-cell-even: rgba(60, 86, 98, 0.3);
+            --table-cell-odd: rgba(45, 69, 80, 0.2);
+            --task-name-bg: #1d353f;
+            --completion-row-bg: #1b3d45;
+            --completion-text: #b1e6f0;
+            --toast-bg: #2e5f4b;
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            --border-light: rgba(255,255,255,0.1);
+            --chart-grid: #365f6b;
+            --chart-label: #b6d0db;
+            --chart-legend: #cbd5e0;
+        }
+
+        /* light theme */
+        body.theme-light {
+            --bg-gradient-start: #f0f4fa;
+            --bg-gradient-end: #d9e2ec;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --text-primary: #1e2b30;
+            --text-secondary: #2c3f48;
+            --stat-bg: #a6c0cf;
+            --input-bg: #ffffff;
+            --input-placeholder: #6f8a9c;
+            --button-bg: #4f798b;
+            --button-hover: #3f6375;
+            --reset-bg: #d97c5c;
+            --reset-hover: #bf6242;
+            --table-header-bg: #cbdae3;
+            --table-cell-even: rgba(160, 184, 197, 0.3);
+            --table-cell-odd: rgba(200, 215, 225, 0.5);
+            --task-name-bg: #d3e2ec;
+            --completion-row-bg: #b8d0dd;
+            --completion-text: #1d4c5c;
+            --toast-bg: #3f886b;
+            --shadow-dark: rgba(0, 0, 0, 0.2);
+            --border-light: rgba(0,0,0,0.1);
+            --chart-grid: #8ba3b3;
+            --chart-label: #2c4b5c;
+            --chart-legend: #2c4b5c;
+        }
+
+        /* neutral mode (calm grey) */
+        body.theme-neutral {
+            --bg-gradient-start: #3a4045;
+            --bg-gradient-end: #2c3136;
+            --card-bg: rgba(45, 50, 55, 0.85);
+            --card-border: rgba(180, 180, 180, 0.15);
+            --text-primary: #ececec;
+            --text-secondary: #c0c8d0;
+            --stat-bg: #4f5a64;
+            --input-bg: #4a535c;
+            --input-placeholder: #aab7c2;
+            --button-bg: #6a7a88;
+            --button-hover: #7e8f9e;
+            --reset-bg: #b5684c;
+            --reset-hover: #9e533a;
+            --table-header-bg: #3a4753;
+            --table-cell-even: rgba(90, 100, 110, 0.3);
+            --table-cell-odd: rgba(70, 80, 90, 0.2);
+            --task-name-bg: #434f5a;
+            --completion-row-bg: #3d4d59;
+            --completion-text: #cfdee9;
+            --toast-bg: #4e6d5e;
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            --border-light: rgba(255,255,255,0.08);
+            --chart-grid: #5b6d7a;
+            --chart-label: #cbd5e0;
+            --chart-legend: #cbd5e0;
+        }
+
+        /* aurora mode (purple/teal) */
+        body.theme-aurora {
+            --bg-gradient-start: #282c4a;
+            --bg-gradient-end: #1e3a4a;
+            --card-bg: rgba(35, 45, 65, 0.8);
+            --card-border: rgba(200, 180, 255, 0.2);
+            --text-primary: #f0eaff;
+            --text-secondary: #cbbff0;
+            --stat-bg: #4d4c7a;
+            --input-bg: #363b60;
+            --input-placeholder: #b1a9e0;
+            --button-bg: #6d5c9e;
+            --button-hover: #8370b5;
+            --reset-bg: #c96f85;
+            --reset-hover: #b2586e;
+            --table-header-bg: #3f3d6b;
+            --table-cell-even: rgba(110, 95, 155, 0.3);
+            --table-cell-odd: rgba(80, 70, 130, 0.2);
+            --task-name-bg: #48447a;
+            --completion-row-bg: #464373;
+            --completion-text: #d9c9ff;
+            --toast-bg: #607d8b;
+            --shadow-dark: rgba(0, 0, 0, 0.6);
+            --border-light: rgba(220, 200, 255, 0.15);
+            --chart-grid: #7970b5;
+            --chart-label: #dfd0ff;
+            --chart-legend: #dfd0ff;
+        }
+
+        body {
+            background: linear-gradient(145deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            min-height: 100vh;
+            padding: 2rem 1rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: flex-start;
+            transition: background 0.2s ease, color 0.2s;
+        }
+
+        .app-wrapper {
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        /* top bar with stats + theme switcher */
+        .top-bar {
+            display: flex;
+            flex-wrap: wrap;
             align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
         }
 
-        .todo-container ul li input[type="checkbox"],
-        .priority-box ul li input[type="checkbox"] {
-            margin-left: 10px;
+        .title {
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 5px var(--shadow-dark);
         }
 
-        .todo-container ul li:hover,
-        .priority-box ul li:hover {
-            background-color: #16131A;
+        .stats-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--border-light);
+            border-radius: 50px;
+            padding: 0.6rem 1.6rem;
+            display: flex;
+            gap: 2rem;
+            color: var(--text-primary);
+            box-shadow: 0 8px 20px var(--shadow-dark);
         }
 
-
-        /* Style for the line chart container */
-        #line-chart-container {
-            width: 94%;
-            margin: 20px auto;
-            margin-left: -150px;
-            text-align: center;
-            background-color: #264653;
-            /* Dark background for the chart container */
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-            /* Shadow for a more pronounced look */
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
         }
 
-        /* Optional: Adjust the canvas size if needed */
-        #completionChart {
-            max-width: 100%;
-            height: auto;
+        .stat-value {
+            font-weight: 600;
+            font-size: 1.4rem;
+            background: var(--stat-bg);
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            color: white;
         }
 
-        /* Table styling */
+        /* theme switcher */
+        .theme-switcher {
+            display: flex;
+            gap: 0.4rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 0.8rem;
+            border-radius: 60px;
+            border: 1px solid var(--border-light);
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.4rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            filter: drop-shadow(0 2px 4px black);
+            opacity: 0.7;
+        }
+
+        .theme-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .theme-btn.active {
+            opacity: 1;
+            background: rgba(255,255,255,0.25);
+            box-shadow: 0 0 0 2px var(--text-secondary);
+        }
+
+        /* task creator */
+        .task-creator {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+            background: rgba(0,0,0,0.2);
+            padding: 1.2rem 1.8rem;
+            border-radius: 64px;
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 10px 25px -10px black;
+        }
+
+        .task-creator input {
+            flex: 1 1 260px;
+            background: var(--input-bg);
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            outline: 2px solid transparent;
+            transition: all 0.2s;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+        }
+
+        .task-creator input::placeholder {
+            color: var(--input-placeholder);
+            font-weight: 300;
+        }
+
+        .task-creator input:focus {
+            outline: 2px solid var(--button-bg);
+        }
+
+        .task-creator button {
+            background: var(--button-bg);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 6px 14px var(--shadow-dark);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+            border: 1px solid var(--border-light);
+        }
+
+        .task-creator button:hover {
+            background: var(--button-hover);
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px var(--shadow-dark);
+        }
+
+        .reset-btn {
+            background: var(--reset-bg) !important;
+        }
+
+        .reset-btn:hover {
+            background: var(--reset-hover) !important;
+        }
+
+        /* table card */
+        .table-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 1.8rem 1.2rem;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 25px 45px -12px black;
+            margin-bottom: 2.5rem;
+            overflow-x: auto;
+        }
+
         .schedule-table {
-            width: 98%;
-            margin-top: 20px;
-            margin-left: -150px;
-        }
-
-        .schedule-table th,
-        .schedule-table td {
-            padding: 0px;
-            font-size: 13px;
-            height: 30px;
-            /* Fixed height for each cell */
-
-            vertical-align: middle;
-            /* Align content vertically in the center */
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
         }
 
         .schedule-table th {
-            background-color: #e99d9d;
+            padding: 0.8rem 0.2rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--table-header-bg);
+            border-radius: 12px 12px 0 0;
         }
 
-        .schedule-table td input[type="checkbox"] {
-            width: 20px;
-            height: 18px;
-            margin: 0 auto;
-            /* Center checkbox inside the cell */
-            display: block;
-
+        .schedule-table td {
+            padding: 0.2rem;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-light);
         }
 
-        .empty {
-            background-color: #f8f8f8;
-        }
-
-        /* Alternating background colors for dates */
         .schedule-table th:nth-child(even),
-        /* Even columns in the header (dates) */
         .schedule-table td:nth-child(even) {
-            /* Even columns in the table body (checkboxes) */
-            background-color: #89959c;
-            /* Light gray background for even columns */
+            background-color: var(--table-cell-even);
         }
 
         .schedule-table th:nth-child(odd),
-        /* Odd columns in the header (dates) */
         .schedule-table td:nth-child(odd) {
-            /* Odd columns in the table body (checkboxes) */
-            background-color: #b3b3b3;
-            /* White background for odd columns */
+            background-color: var(--table-cell-odd);
         }
 
-        /* Styling for the completion percentage row */
-        #completion-row td {
+        .task-name-cell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 0.3rem 0.5rem 0.3rem 0.8rem;
+            background: var(--task-name-bg);
+            border-radius: 40px;
+            margin: 4px;
+            box-shadow: inset 0 1px 3px #0e1f26;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .delete-task-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #ffa690;
+            padding: 0 6px;
+            border-radius: 30px;
+            transition: 0.15s;
+            line-height: 1;
+        }
+
+        .delete-task-btn:hover {
+            color: #ff6f5c;
+            transform: scale(1.15);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--button-bg);
+            border-radius: 6px;
+            transition: 0.1s;
+        }
+
+        .completion-row td {
+            background: var(--completion-row-bg) !important;
+            color: var(--completion-text);
+            font-weight: 600;
+            font-size: 0.8rem;
+            border-top: 2px solid var(--button-bg);
+        }
+
+        /* chart card */
+        .chart-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 36px;
+            padding: 1.5rem 1.2rem;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 20px 35px -10px black;
+        }
+
+        .save-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--toast-bg);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            box-shadow: 0 12px 25px var(--shadow-dark);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+            z-index: 999;
+            border: 1px solid var(--border-light);
+        }
+
+        .save-toast.show {
+            opacity: 1;
+        }
+
+        .empty-message {
             text-align: center;
-            font-weight: bold;
-            background-color: #f3f3f3;
-            padding: 0px;
-        }
-
-        /* Make the table responsive */
-        @media screen and (max-width: 768px) {
-
-            .schedule-table th,
-            .schedule-table td {
-                padding: 0px;
-            }
-
-            .schedule-table td input[type="checkbox"] {
-                width: 15px;
-                height: 15px;
-            }
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: var(--task-name-bg);
+            border-radius: 60px;
         }
     </style>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
-
-<body>
-
-    <div class="container">
-        <!-- <h1 style="color: white;">Complete the tasks</h1> -->
-
-        <!-- Input to add new task -->
-        <div class="task-list">
-            <!-- <label for="new-task">New Task:</label> -->
-            <input type="text" id="new-task" placeholder="Enter a task...">
-            <button id="add-task">Add Task</button>
-            <button id="delete-task-btn" style="margin-left: 0px;">Delete Task</button>
-
+<body class="theme-dark"> <!-- default -->
+<div class="app-wrapper">
+    <div class="top-bar">
+        <h1 class="title">📅 Kile Fathe</h1>
+        <div class="stats-card">
+            <div class="stat-item"><span>📌 tasks</span><span class="stat-value" id="total-tasks-count">0</span></div>
+            <div class="stat-item"><span>⚡ avg</span><span class="stat-value" id="avg-completion">0%</span></div>
         </div>
+        <!-- theme switcher -->
+        <div class="theme-switcher">
+            <button class="theme-btn" data-theme="theme-dark" title="dark">🌙</button>
+            <button class="theme-btn" data-theme="theme-light" title="light">☀️</button>
+            <button class="theme-btn" data-theme="theme-neutral" title="neutral">💨</button>
+            <button class="theme-btn" data-theme="theme-aurora" title="aurora">✨</button>
+        </div>
+    </div>
 
+    <!-- input row -->
+    <div class="task-creator">
+        <input type="text" id="new-task" placeholder="e.g., morning pages, study session ..." autocomplete="off">
+        <button id="add-task">➕ Add task</button>
+        <button id="reset-btn" class="reset-btn">⟲ Reset all</button>
+    </div>
 
-
-        <!-- Table for the schedule -->
-        <table class="schedule-table">
-            <thead>
-                <tr>
-                    <th class="empty"></th>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                    <th>6</th>
-                    <th>7</th>
-                    <th>8</th>
-                    <th>9</th>
-                    <th>10</th>
-                    <th>11</th>
-                    <th>12</th>
-                    <th>13</th>
-                    <th>14</th>
-                    <th>15</th>
-                    <th>16</th>
-                    <th>17</th>
-                    <th>18</th>
-                    <th>19</th>
-                    <th>20</th>
-                    <th>21</th>
-                    <th>22</th>
-                    <th>23</th>
-                    <th>24</th>
-                    <th>25</th>
-                    <th>26</th>
-                    <th>27</th>
-                    <th>28</th>
-                    <th>29</th>
-                    <th>30</th>
-                    <th>31</th>
-                </tr>
-            </thead>
-            <tbody id="task-rows">
-                <!-- Task rows will be dynamically added here -->
-            </tbody>
-            <tfoot>
-                <tr id="completion-row">
-                    <td><strong>Completion (%)</strong></td>
-                    <!-- Empty cells for each date (1–31) -->
-                    <td id="completion-1"></td>
-                    <td id="completion-2"></td>
-                    <td id="completion-3"></td>
-                    <td id="completion-4"></td>
-                    <td id="completion-5"></td>
-                    <td id="completion-6"></td>
-                    <td id="completion-7"></td>
-                    <td id="completion-8"></td>
-                    <td id="completion-9"></td>
-                    <td id="completion-10"></td>
-                    <td id="completion-11"></td>
-                    <td id="completion-12"></td>
-                    <td id="completion-13"></td>
-                    <td id="completion-14"></td>
-                    <td id="completion-15"></td>
-                    <td id="completion-16"></td>
-                    <td id="completion-17"></td>
-                    <td id="completion-18"></td>
-                    <td id="completion-19"></td>
-                    <td id="completion-20"></td>
-                    <td id="completion-21"></td>
-                    <td id="completion-22"></td>
-                    <td id="completion-23"></td>
-                    <td id="completion-24"></td>
-                    <td id="completion-25"></td>
-                    <td id="completion-26"></td>
-                    <td id="completion-27"></td>
-                    <td id="completion-28"></td>
-                    <td id="completion-29"></td>
-                    <td id="completion-30"></td>
-                    <td id="completion-31"></td>
-                </tr>
-            </tfoot>
+    <!-- main table -->
+    <div class="table-container">
+        <table class="schedule-table" id="schedule-table">
+            <thead><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th></tr></thead>
+            <tbody id="task-rows"></tbody>
+            <tfoot><tr id="completion-row" class="completion-row"><td><strong>📊 %</strong></td><td id="completion-1"></td><td id="completion-2"></td><td id="completion-3"></td><td id="completion-4"></td><td id="completion-5"></td><td id="completion-6"></td><td id="completion-7"></td><td id="completion-8"></td><td id="completion-9"></td><td id="completion-10"></td><td id="completion-11"></td><td id="completion-12"></td><td id="completion-13"></td><td id="completion-14"></td><td id="completion-15"></td><td id="completion-16"></td><td id="completion-17"></td><td id="completion-18"></td><td id="completion-19"></td><td id="completion-20"></td><td id="completion-21"></td><td id="completion-22"></td><td id="completion-23"></td><td id="completion-24"></td><td id="completion-25"></td><td id="completion-26"></td><td id="completion-27"></td><td id="completion-28"></td><td id="completion-29"></td><td id="completion-30"></td><td id="completion-31"></td></tr></tfoot>
         </table>
-
-        <!-- Line chart container -->
-        <div id="line-chart-container">
-            <canvas id="completionChart" width="400" height="150"></canvas>
-        </div>
-
     </div>
 
-
-    <!-- Right Side Container -->
-    <div class="priority-container">
-        <!-- To-Do Box -->
-        <button id="save-btn">Save Data</button>
-
-        <div class="todo-container">
-            <h2>To-Do</h2>
-            <input type="text" id="todo-task" placeholder="Enter Task...">
-            <button id="add-todo-btn">Add To-Do</button>
-            <ul id="todo-list"></ul>
-        </div>
-
-        <!-- Top Priority Box -->
-        <div class="priority-box">
-            <h2>Top Priority</h2>
-            <input type="text" id="top-priority" placeholder="Enter Task...">
-            <button id="add-top-priority-btn">Add Priority</button>
-            <ul id="top-priority-list"></ul>
-        </div>
-
-        <!-- Low Priority Box -->
-        <div class="priority-box">
-            <h2>Low Priority</h2>
-            <input type="text" id="low-priority" placeholder="Enter Task...">
-            <button id="add-low-priority-btn">Add Priority</button>
-            <ul id="low-priority-list"></ul>
-        </div>
+    <!-- chart -->
+    <div class="chart-card">
+        <canvas id="completionChart" width="400" height="150"></canvas>
     </div>
 
-    <div id="notification" class="notification">Task Data saved successfully!</div>
+    <!-- auto-save toast -->
+    <div id="save-toast" class="save-toast">✨ auto-saved</div>
+</div>
 
-    <button id="refresh-btn"
-        style=" bottom: 10px; right: 20px; padding: 10px 20px; background-color: #ff5722; color: white; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        Reset
-    </button>
-
-
-    <script>
-        const taskInput = document.getElementById('new-task');
-        const taskTableBody = document.querySelector("#task-table tbody");
-        const addTaskButton = document.getElementById('add-task');
-        const deleteTaskButton = document.getElementById('delete-task-btn');
-        const saveButton = document.getElementById('save-btn'); // Reference the Save button from HTML
+<script>
+    (function() {
+        // ---------- core data ----------
+        let tasks = [];
         const taskRows = document.getElementById('task-rows');
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || []; // Load tasks from localStorage
+        const newTaskInput = document.getElementById('new-task');
+        const addBtn = document.getElementById('add-task');
+        const resetBtn = document.getElementById('reset-btn');
+        let chart;
+        const dailyCompletion = Array(31).fill(0);
+        const totalTasksSpan = document.getElementById('total-tasks-count');
+        const avgCompletionSpan = document.getElementById('avg-completion');
+        const toast = document.getElementById('save-toast');
+        const themeBtns = document.querySelectorAll('.theme-btn');
+        const body = document.body;
 
-        const taskCompletion = Array(31).fill(0);
-        const totalCompletionBox = document.getElementById('total-completion');
+        // show auto-save toast
+        function showAutoSave() {
+            toast.classList.add('show');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => toast.classList.remove('show'), 1000);
+        }
 
-        function addTaskRow(task) {
+        // ---------- localStorage ----------
+        function saveEverything() {
+            localStorage.setItem('planner_tasks', JSON.stringify(tasks));
+            showAutoSave();
+        }
+
+        function loadTasks() {
+            const stored = localStorage.getItem('planner_tasks');
+            if (stored) { try { tasks = JSON.parse(stored); } catch (e) { tasks = []; } }
+            else tasks = [];
+            tasks = tasks.map(t => ({ ...t, completedDays: Array.isArray(t.completedDays) ? t.completedDays : [] }));
+        }
+
+        // ---------- render all tasks ----------
+        function renderAllTasks() {
+            taskRows.innerHTML = '';
+            if (tasks.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `<td colspan="32" class="empty-message">✨ add a task — your monthly tracker awaits ✨</td>`;
+                taskRows.appendChild(emptyRow);
+            } else {
+                tasks.forEach(task => addTaskRowToDOM(task));
+            }
+            for (let d = 1; d <= 31; d++) updateCompletionPercentage(d);
+            updateStats();
+            updateChartFromDays();
+        }
+
+        function addTaskRowToDOM(task) {
             const { id, name, completedDays } = task;
-            const newRow = document.createElement('tr');
-            newRow.dataset.taskId = id;
+            const tr = document.createElement('tr');
+            tr.dataset.taskId = id;
 
-            const taskCell = document.createElement('td');
-            taskCell.innerHTML = `<strong>${name}</strong>`;
-            newRow.appendChild(taskCell);
+            const tdName = document.createElement('td');
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'task-name-cell';
+            nameDiv.innerHTML = `<span style="flex:1;">${escapeHTML(name)}</span>
+                                <button class="delete-task-btn" data-task-id="${id}" title="delete task">🗑️</button>`;
+            tdName.appendChild(nameDiv);
+            tr.appendChild(tdName);
 
-            for (let i = 1; i <= 31; i++) {
-                const checkboxCell = document.createElement('td');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.classList.add('checkbox');
-                checkbox.dataset.day = i;
-                if (completedDays.includes(i)) {
-                    checkbox.checked = true;
-                }
-                checkboxCell.appendChild(checkbox);
-                newRow.appendChild(checkboxCell);
+            for (let day = 1; day <= 31; day++) {
+                const td = document.createElement('td');
+                const chk = document.createElement('input');
+                chk.type = 'checkbox';
+                chk.className = 'checkbox';
+                chk.dataset.day = day;
+                chk.dataset.taskId = id;
+                if (completedDays.includes(day)) chk.checked = true;
+                td.appendChild(chk);
+                tr.appendChild(chk.parentNode);
 
-                checkbox.addEventListener('change', function () {
-                    if (checkbox.checked) {
-                        completedDays.push(i);
+                chk.addEventListener('change', function(e) {
+                    const taskId = Number(this.dataset.taskId);
+                    const dayNum = Number(this.dataset.day);
+                    const task = tasks.find(t => t.id === taskId);
+                    if (!task) return;
+                    if (this.checked) {
+                        if (!task.completedDays.includes(dayNum)) task.completedDays.push(dayNum);
                     } else {
-                        const index = completedDays.indexOf(i);
-                        if (index > -1) {
-                            completedDays.splice(index, 1);
-                        }
+                        const idx = task.completedDays.indexOf(dayNum);
+                        if (idx !== -1) task.completedDays.splice(idx, 1);
                     }
-                    updateCompletionPercentage(i);
-                    updateTotalCompletion();
+                    updateCompletionPercentage(dayNum);
+                    updateStats();
+                    updateChartFromDays();
+                    saveEverything();
                 });
             }
 
-            taskRows.appendChild(newRow);
-            deleteTaskButton.style.display = 'block';
+            taskRows.appendChild(tr);
 
-            for (let i = 1; i <= 31; i++) {
-                updateCompletionPercentage(i);
-            }
+            const deleteBtn = nameDiv.querySelector('.delete-task-btn');
+            deleteBtn.addEventListener('click', function() {
+                const taskId = Number(this.dataset.taskId);
+                tasks = tasks.filter(t => t.id !== taskId);
+                renderAllTasks();
+                saveEverything();
+            });
+        }
+
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>"]/g, function(m) {
+                if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; if (m === '"') return '&quot;';
+                return m;
+            });
         }
 
         function updateCompletionPercentage(day) {
             const checkboxes = document.querySelectorAll(`input[data-day="${day}"]`);
-            const totalCheckboxes = checkboxes.length;
-            if (totalCheckboxes === 0) return;
-
-            const completedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
-            const percentage = (completedCheckboxes / totalCheckboxes) * 100;
-            const completionCell = document.getElementById(`completion-${day}`);
-            if (completionCell) {
-                completionCell.textContent = percentage === 0 ? '' : `${Math.round(percentage)}%`;
+            const total = checkboxes.length;
+            if (total === 0) {
+                document.getElementById(`completion-${day}`).textContent = '';
+                dailyCompletion[day-1] = 0;
+                return;
             }
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const percent = Math.round((checked / total) * 100);
+            dailyCompletion[day-1] = percent;
+            const cell = document.getElementById(`completion-${day}`);
+            if (cell) cell.textContent = percent === 0 ? '' : percent + '%';
         }
 
-        function updateTotalCompletion() {
-            let totalPercentage = 0;
-            let daysWithCompletion = 0;
-            for (let i = 1; i <= 31; i++) {
-                const completionCell = document.getElementById(`completion-${i}`);
-                if (completionCell && completionCell.textContent) {
-                    const percentage = parseInt(completionCell.textContent, 10);
-                    if (!isNaN(percentage)) {
-                        totalPercentage += percentage;
-                        daysWithCompletion++;
-                    }
-                }
+        function updateStats() {
+            totalTasksSpan.textContent = tasks.length;
+            let sum = 0, count = 0;
+            for (let d = 1; d <= 31; d++) {
+                const val = dailyCompletion[d-1];
+                if (val > 0) { sum += val; count++; }
             }
-            const totalCompletionPercentage = daysWithCompletion > 0 ? totalPercentage / daysWithCompletion : 0;
-            totalCompletionBox.textContent = `Total Completion: ${Math.round(totalCompletionPercentage)}%`;
+            const avg = count === 0 ? 0 : Math.round(sum / count);
+            avgCompletionSpan.textContent = avg + '%';
         }
 
-        window.onload = function () {
-            tasks.forEach(task => addTaskRow(task));
-            updateTotalCompletion();
-        };
-
-        addTaskButton.addEventListener('click', function () {
-            const taskName = taskInput.value.trim();
-            if (taskName) {
-                const taskId = tasks.length + 1;
-                const newTask = { id: taskId, name: taskName, completedDays: [] };
-                tasks.push(newTask);
-                addTaskRow(newTask);
-                taskInput.value = '';
-            } else {
-                alert('Please enter a task name.');
-            }
-        });
-
-        deleteTaskButton.addEventListener('click', function () {
-            const taskNames = tasks.map(task => task.name);
-            const taskToDelete = prompt(`Which task would you like to delete?\n\n${taskNames.join('\n')}`);
-            if (taskToDelete && taskNames.includes(taskToDelete)) {
-                deleteTask(taskToDelete);
-            } else {
-                alert('Task not found.');
-            }
-        });
-
-        function deleteTask(taskName) {
-            const taskToDelete = tasks.find(task => task.name === taskName);
-            if (taskToDelete) {
-                tasks = tasks.filter(task => task.id !== taskToDelete.id);
-                localStorage.setItem('tasks', JSON.stringify(tasks)); // Save to localStorage
-                const rowToDelete = taskRows.querySelector(`tr[data-task-id="${taskToDelete.id}"]`);
-                if (rowToDelete) taskRows.removeChild(rowToDelete);
-                if (tasks.length === 0) deleteTaskButton.style.display = 'none';
-                for (let i = 1; i <= 31; i++) updateCompletionPercentage(i);
-                updateTotalCompletion();
-            }
-        }
-        const notification = document.getElementById('notification');
-
-        saveButton.addEventListener('click', function () {
-            localStorage.setItem('tasks', JSON.stringify(tasks)); // Save to localStorage
-
-            // Show notification
-            notification.style.display = 'block';
-
-            // Hide notification after 1 second
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 1000);
-        });
-
-        // The rest of your original code remains unchanged...
-
-        // The rest of your original code remains unchanged...
-        const todoInput = document.getElementById('todo-task');
-        const addTodoButton = document.getElementById('add-todo-btn');
-        const todoList = document.getElementById('todo-list');
-        const topPriorityInput = document.getElementById('top-priority');
-        const addTopPriorityButton = document.getElementById('add-top-priority-btn');
-        const topPriorityList = document.getElementById('top-priority-list');
-        const lowPriorityInput = document.getElementById('low-priority');
-        const addLowPriorityButton = document.getElementById('add-low-priority-btn');
-        const lowPriorityList = document.getElementById('low-priority-list');
-
-        function loadTasks() {
-            const todoTasks = JSON.parse(localStorage.getItem('todoTasks')) || [];
-            const topPriorityTasks = JSON.parse(localStorage.getItem('topPriorityTasks')) || [];
-            const lowPriorityTasks = JSON.parse(localStorage.getItem('lowPriorityTasks')) || [];
-            todoTasks.forEach(task => addTodoTask(task));
-            topPriorityTasks.forEach(task => addPriorityTask(task, topPriorityList));
-            lowPriorityTasks.forEach(task => addPriorityTask(task, lowPriorityList));
+        function updateChartFromDays() {
+            if (!chart) return;
+            chart.data.datasets[0].data = [...dailyCompletion];
+            chart.update();
         }
 
-        function addTodoTask(task) {
-            if (!task.trim()) return;
-
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-<input type="checkbox" class="task-checkbox">
-<span>${task}</span>
-`;
-
-            listItem.querySelector('.task-checkbox').addEventListener('change', function () {
-                if (this.checked) {
-                    todoList.removeChild(listItem);
-                    updateLocalStorage();
-                }
-            });
-
-            todoList.appendChild(listItem);
-        }
-
-        function addPriorityTask(taskText, list) {
-            if (!taskText.trim()) return;
-
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-<input type="checkbox" class="task-checkbox">
-<span>${taskText}</span>
-`;
-
-            listItem.querySelector('.task-checkbox').addEventListener('change', function () {
-                if (this.checked) {
-                    list.removeChild(listItem);
-                    updateLocalStorage();
-                }
-            });
-
-            list.appendChild(listItem);
-        }
-
-        function updateLocalStorage() {
-            const todoTasks = [];
-            const topPriorityTasks = [];
-            const lowPriorityTasks = [];
-            todoList.querySelectorAll('li span').forEach(span => {
-                todoTasks.push(span.textContent);
-            });
-            topPriorityList.querySelectorAll('li span').forEach(span => {
-                topPriorityTasks.push(span.textContent);
-            });
-            lowPriorityList.querySelectorAll('li span').forEach(span => {
-                lowPriorityTasks.push(span.textContent);
-            });
-            localStorage.setItem('todoTasks', JSON.stringify(todoTasks));
-            localStorage.setItem('topPriorityTasks', JSON.stringify(topPriorityTasks));
-            localStorage.setItem('lowPriorityTasks', JSON.stringify(lowPriorityTasks));
-        }
-
-        addTodoButton.addEventListener('click', function () {
-            const task = todoInput.value.trim();
-            if (task) {
-                addTodoTask(task);
-                todoInput.value = '';
-                updateLocalStorage();
-            } else {
-                alert("Please enter a task.");
-            }
-        });
-
-        todoInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                const task = todoInput.value.trim();
-                if (task) {
-                    addTodoTask(task);
-                    todoInput.value = '';
-                    updateLocalStorage();
-                } else {
-                    alert("Please enter a task.");
-                }
-            }
-        });
-
-        addTopPriorityButton.addEventListener('click', function () {
-            const task = topPriorityInput.value.trim();
-            if (task) {
-                addPriorityTask(task, topPriorityList);
-                topPriorityInput.value = '';
-                updateLocalStorage();
-            } else {
-                alert("Please enter a task.");
-            }
-        });
-
-        addLowPriorityButton.addEventListener('click', function () {
-            const task = lowPriorityInput.value.trim();
-            if (task) {
-                addPriorityTask(task, lowPriorityList);
-                lowPriorityInput.value = '';
-                updateLocalStorage();
-            } else {
-                alert("Please enter a task.");
-            }
-        });
-
-        topPriorityInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                const task = topPriorityInput.value.trim();
-                if (task) {
-                    addPriorityTask(task, topPriorityList);
-                    topPriorityInput.value = '';
-                    updateLocalStorage();
-                } else {
-                    alert("Please enter a task.");
-                }
-            }
-        });
-
-        lowPriorityInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                const task = lowPriorityInput.value.trim();
-                if (task) {
-                    addPriorityTask(task, lowPriorityList);
-                    lowPriorityInput.value = '';
-                    updateLocalStorage();
-                } else {
-                    alert("Please enter a task.");
-                }
-            }
-        });
-
-        window.addEventListener('load', loadTasks);
-
-        let chart;
-        const dailyCompletion = Array(31).fill(0);
-
-        function initializeChart() {
+        // ---------- chart init with theme-aware colors ----------
+        function initChart() {
             const ctx = document.getElementById('completionChart').getContext('2d');
+            const style = getComputedStyle(body);
             chart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: Array.from({ length: 31 }, (_, i) => i + 1),
                     datasets: [{
-                        label: 'Completion Percentage (%)',
+                        label: 'daily completion %',
                         data: dailyCompletion,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: '#8fc9df',
+                        backgroundColor: 'rgba(98, 165, 194, 0.2)',
+                        tension: 0.3,
                         fill: true,
-                        tension: 0.4,
-                        borderWidth: 2
+                        pointBackgroundColor: '#c2e5f5',
+                        pointBorderColor: '#2b5f77',
+                        borderWidth: 3
                     }]
                 },
                 options: {
                     responsive: true,
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Days (1-31)',
-                                color: 'rgba(164, 164, 164, 1)'
-                            },
-                            grid: {
-                                color: 'rgba(104, 104, 104, 0.5)'
-                            },
-                            ticks: {
-                                color: 'rgba(164, 164, 164, 1)'
-                            }
-                        },
-                        y: {
-                            min: 0,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: 'Completion (%)',
-                                color: 'rgba(164, 164, 164, 1)'
-                            },
-                            grid: {
-                                color: 'rgba(104, 104, 104, 0.5)'
-                            },
-                            ticks: {
-                                color: 'rgba(164, 164, 164, 1)'
-                            }
-                        }
-                    },
+                    maintainAspectRatio: true,
                     plugins: {
-                        legend: {
-                            labels: {
-                                color: 'rgba(164, 164, 164, 1)'
-                            }
+                        legend: { labels: { color: style.getPropertyValue('--chart-legend').trim() || '#cbd5e0' } }
+                    },
+                    scales: {
+                        x: { grid: { color: style.getPropertyValue('--chart-grid').trim() || '#365f6b' }, ticks: { color: style.getPropertyValue('--chart-label').trim() || '#b6d0db' } },
+                        y: { min: 0, max: 100, grid: { color: style.getPropertyValue('--chart-grid').trim() || '#365f6b' }, ticks: { color: style.getPropertyValue('--chart-label').trim() || '#b6d0db', stepSize: 20 }
                         }
                     }
                 }
             });
         }
 
-        function updateChart() {
-            chart.data.datasets[0].data = dailyCompletion;
+        // update chart colors when theme changes
+        function updateChartTheme() {
+            if (!chart) return;
+            const style = getComputedStyle(body);
+            chart.options.plugins.legend.labels.color = style.getPropertyValue('--chart-legend').trim();
+            chart.options.scales.x.grid.color = style.getPropertyValue('--chart-grid').trim();
+            chart.options.scales.x.ticks.color = style.getPropertyValue('--chart-label').trim();
+            chart.options.scales.y.grid.color = style.getPropertyValue('--chart-grid').trim();
+            chart.options.scales.y.ticks.color = style.getPropertyValue('--chart-label').trim();
             chart.update();
         }
 
-        function updateCompletionPercentage(day) {
-            const checkboxes = document.querySelectorAll(`input[data-day="${day}"]`);
-            const totalCheckboxes = checkboxes.length;
-
-            if (totalCheckboxes === 0) return;
-
-            const completedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
-            const percentage = (completedCheckboxes / totalCheckboxes) * 100;
-            dailyCompletion[day - 1] = percentage;
-
-            const completionCell = document.getElementById(`completion-${day}`);
-            if (completionCell) {
-                completionCell.textContent = percentage === 0 ? '' : `${Math.round(percentage)}%`;
-            }
-
-            updateChart();
+        // ---------- theme switcher ----------
+        function setTheme(themeClass) {
+            body.className = themeClass;  // remove others, set new
+            localStorage.setItem('planner_theme', themeClass);
+            // update active button
+            themeBtns.forEach(btn => {
+                if (btn.dataset.theme === themeClass) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            updateChartTheme();
         }
 
-        window.onload = function () {
-            initializeChart();
-            tasks.forEach(task => addTaskRow(task));
-            updateTotalCompletion();
-        };
+        // load saved theme
+        const savedTheme = localStorage.getItem('planner_theme');
+        if (savedTheme && savedTheme.match(/^theme-(dark|light|neutral|aurora)$/)) {
+            setTheme(savedTheme);
+        } else {
+            setTheme('theme-dark'); // default
+        }
 
-        const refreshButton = document.getElementById('refresh-btn');
+        themeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setTheme(btn.dataset.theme);
+            });
+        });
 
-        refreshButton.addEventListener('click', function () {
-            taskRows.innerHTML = '';
+        // ---------- task actions ----------
+        function addNewTask() {
+            const taskName = newTaskInput.value.trim();
+            if (!taskName) { alert('enter a task'); return; }
+            const newId = tasks.length ? Math.max(...tasks.map(t => t.id)) + 1 : 1;
+            tasks.push({ id: newId, name: taskName, completedDays: [] });
+            renderAllTasks();
+            newTaskInput.value = '';
+            saveEverything();
+        }
+
+        function resetAll() {
+            if (!confirm('Delete all tasks?')) return;
             tasks = [];
-            localStorage.removeItem('tasks'); // Clear tasks from localStorage
-            for (let i = 1; i <= 31; i++) {
-                const completionCell = document.getElementById(`completion-${i}`);
-                if (completionCell) completionCell.textContent = '';
-            }
-            dailyCompletion.fill(0);
-            updateChart();
-            deleteTaskButton.style.display = 'none';
-            updateTotalCompletion();
-        });
+            renderAllTasks();
+            saveEverything();
+        }
 
-        window.addEventListener('scroll', function () {
-            const docHeight = document.documentElement.scrollHeight;
-            const windowHeight = window.innerHeight;
-            const scrollPosition = window.scrollY;
-            if (scrollPosition >= docHeight - windowHeight - 10) {
-                document.getElementById('refresh-btn').style.display = 'block';
-            } else {
-                document.getElementById('refresh-btn').style.display = 'none';
-            }
-        });
+        addBtn.addEventListener('click', addNewTask);
+        newTaskInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addNewTask(); });
+        resetBtn.addEventListener('click', resetAll);
 
-        const taskHeader = document.getElementById('task-header');
-
-        taskHeader.addEventListener('mouseover', function () {
-            taskHeader.style.display = 'block';
-        });
-
-        taskHeader.addEventListener('mouseleave', function () {
-            taskHeader.style.display = 'none';
-        });
-
-
-    </script>
-
+        // ---------- bootstrap ----------
+        loadTasks();
+        initChart();
+        renderAllTasks();
+        // after render ensure chart theme matches current (already set by setTheme earlier)
+        updateChartTheme();
+    })();
+</script>
 </body>
-
 </html>
